@@ -25,7 +25,7 @@ class UpdateRequest extends FormRequest
             'id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $this->id,
-            'password' => 'nullable|string|min:6',
+//            'password' => 'nullable|string|min:6',
             'surname' => 'required|string|max:255',
             'patronymic' => 'nullable|string|max:255',
             'gender' => 'required|integer',
