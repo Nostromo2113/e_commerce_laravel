@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreRequest;
+use App\Mail\UserRegistered;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class StoreController extends Controller
 {
@@ -21,19 +24,21 @@ class StoreController extends Controller
             ], 409);
         }
 
+        $password = Str::random(12);
 
         $newUser = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($password),
             'surname' => $data['surname'],
             'patronymic' => $data['patronymic'],
             'gender' => $data['gender'],
             'age' => $data['age'],
             'address' => $data['address']
         ]);
+
+        Mail::to($newUser->email)->send(new UserRegistered($newUser, $password));
         $newUser->sendEmailVerificationNotification();
-        // Возвращаем успешный ответ с данными и статусом 201
         return response()->json([
             'message' => 'User created successfully',
             'data' => $newUser
