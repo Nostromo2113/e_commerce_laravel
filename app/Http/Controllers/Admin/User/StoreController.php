@@ -13,11 +13,9 @@ class StoreController extends Controller
     {
         $data = $request->validated();
 
-        // Проверяем, существует ли категория с таким названием
         $user = User::where('email', $data['email'])->first();
 
         if ($user) {
-            // Возвращаем статус 409, если категория уже существует
             return response()->json([
                 'message' => 'User already exists'
             ], 409);
@@ -34,7 +32,7 @@ class StoreController extends Controller
             'age' => $data['age'],
             'address' => $data['address']
         ]);
-
+        $newUser->sendEmailVerificationNotification();
         // Возвращаем успешный ответ с данными и статусом 201
         return response()->json([
             'message' => 'User created successfully',
