@@ -20,7 +20,6 @@ class UpdateController extends Controller
         $user->fill([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
             'surname' => $data['surname'],
             'patronymic' => $data['patronymic'],
             'gender' => $data['gender'],
