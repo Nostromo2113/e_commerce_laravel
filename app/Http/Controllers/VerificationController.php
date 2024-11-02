@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
 class VerificationController extends Controller
 {
     public function verify(Request $request, $id, $hash)
     {
-        // Проверка и верификация пользователя
-        $user = \App\Models\User::findOrFail($id);
+        $user = User::findOrFail($id);
 
         if (! hash_equals($hash, sha1($user->email))) {
             throw ValidationException::withMessages([
